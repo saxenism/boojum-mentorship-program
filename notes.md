@@ -149,4 +149,23 @@ for _cycle in 0..limit { // `limit` here is defined as the upper bound of sponge
     + This is the ground-work for the hard discrete log problem (ECDLP)
         + The only feasible threat to these kind of *hard* problems are quantum computers.
 
-8. 
+8. The ECDSA signing algorithm goes as follows:
+    + Input -> Message and the private key
+    + Output -> Signature in the form of a pair of integers (r,s)
+    + Step 1 is to calculate the hash of the message
+        + h = hash(msg)
+    + Step 2 is to generate a random number k
+    + Step 3 is to calculate a random point on the EC, ie, `R = kG` and take it's x-coordinate, ie, `r = R.x`
+    + Step 4 is to calculate the *signature proof* 
+        + `s = k ^ -1 * (h + p  * r) mod n`
+    + Step 5 is return the signature, ie, (r,s)
+
+9. Next step is signature verification. This takes as input:
+    + the signature, the signed message, the public key
+    + the output is a boolean indicating whether the signature is valid or not
+    + Funda is to convert the `s` back into R using the public key. The recovered R's x-coordinate is  compared with `r` from the signature.
+    + The formula to get that done is:
+        + `h = Hash(msg)`
+        + `s_inv = s ^ -1 (mod n)`
+        + `R' = (h * s_inv) * G + (r * s_inv) * pub_key`
+    + Then finally compare the x-coordinates, ie, R'.x == r
