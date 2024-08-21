@@ -104,6 +104,7 @@ for _cycle in 0..limit { // `limit` here is defined as the upper bound of sponge
 1. Implement a circuit that constraints the signing and verifying of a message with ECDSA using the secp256k1 curve.
 
 2. Fixtures(whatever that means) for secp256k1 exist here: https://github.com/matter-labs/era-zkevm_circuits/tree/v1.4.1/src/ecrecover/secp256k1
+    + Now I know what they mean. It's just the constant values for the different parameters that we will be using in our calculations. Like `a` and `b` from the EC's equation
 
 3. A good example of how to use curves and non-native fields will be in the [ecrecover circuit](https://github.com/matter-labs/era-zkevm_circuits/tree/v1.4.1/src/ecrecover)
 
@@ -169,3 +170,20 @@ for _cycle in 0..limit { // `limit` here is defined as the upper bound of sponge
         + `s_inv = s ^ -1 (mod n)`
         + `R' = (h * s_inv) * G + (r * s_inv) * pub_key`
     + Then finally compare the x-coordinates, ie, R'.x == r
+
+### Circuit Specific Terminologies
+
+1. FSM: Finite State Machine.
+    +  This is what connects multiple circuits together
+2. PointAffine: Representing a point on Elliptic Curve with Affine Coordinates. 
+    + Affine coordinates are exactly what you'd expect. A point in affine coordinates is typically represented as (x, y) where x and y satisfy the elliptic curve equation. This equation is often in the form: `y² = x³ + ax + b` (for some constants a and b)
+
+### Progress:
+
+1. Read, revised and re-understood the EC cryptography and the signing and verification algorithm
+2. Implement the ECDSA signing and verification algorithm out-of-circuit
+    + I technically did not implement it from scratch, but used a lot of pre-existing Python packages to accomplish the same.
+3. Now I will be reading and understanding the ecrecover circuit to understand how to use curves and non-native fields.
+    + I was able to understand the test the produces the signature using the ECDSA signing algo :D
+    + This is the first step that was required to write my circuit for signing of messages. 
+    + I am close to writing mine now... Real soon. 
